@@ -59,42 +59,44 @@
 
 
   <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
   <script>
-
-    $(function() {
+    $(function () {
 
       let username;
-      
-      $('#start_chat').on('click', function() {
+
+      $('#start_chat').on('click', function () {
         username = $('#username_input').val();
         $('.modal').removeClass('is-active')
       })
 
-      $('#chat_btn').on('click', function() {
+      $('#chat_btn').on('click', function () {
 
         let message = $('#chat_text').val();
 
-        $.post('/message', {'username': username, 'message': message}, function() {
+        $.post('/message', {
+          'username': username,
+          'message': message
+        }, function () {
           $('#chat_text').val('');
         });
       })
 
       // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
+      Pusher.logToConsole = true;
 
-    var pusher = new Pusher('93c0c9a1854f98ead643', {
-      cluster: 'eu'
-    });
+      var pusher = new Pusher('93c0c9a1854f98ead643', {
+        cluster: 'eu'
+      });
 
-    var channel = pusher.subscribe('chat-channel');
-    channel.bind('new-message', function(data) {
-      let name = data.username;
-          let message = data.message;
+      var channel = pusher.subscribe('chat-channel');
+      channel.bind('new-message', function (data) {
+        let name = data.username;
+        let message = data.message;
 
-          let message_template = `<article class="media">
+        let message_template = `<article class="media">
                                   <div class="media-content">
                                     <div class="content">
                                       <p>
@@ -104,13 +106,11 @@
                                     </div>
                                   </div>
                                 </article>`;
-                                
-          $('#content').append(message_template);
-    });
+
+        $('#content').append(message_template);
+      });
 
     });
-
-    
   </script>
 
 </body>
